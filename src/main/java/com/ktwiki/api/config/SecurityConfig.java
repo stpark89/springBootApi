@@ -1,6 +1,6 @@
 package com.ktwiki.api.config;
 
-import com.ktwiki.api.filter.JwtAuthenticationTokenFilter;
+// import com.ktwiki.api.filter.JwtAuthenticationTokenFilter;
 import com.ktwiki.api.security.CustomAuthenticationProvider;
 import com.ktwiki.api.security.JwtAuthenticationEntryPoint;
 import lombok.extern.java.Log;
@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     private JwtAuthenticationEntryPoint unauthorizedHandler;
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    // private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     private PasswordEncoder passwordEncoder;
     private UserDetailsService userDetailsService;
 
@@ -58,13 +60,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("SecurityConfig.setUserDetailsService");
         this.userDetailsService = jwtUserDetailsService;
     }
-
+    /**
     @Inject
     public void setJwtAuthenticationTokenFilter(
             JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
         log.info("SecurityConfig.setJwtAuthenticationTokenFilter");
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
     }
+    **/
 
     // AuthenticationManagerBuilder : 스프링 시큐리티의 인증에 대한 지원을 설정
     @Inject
@@ -78,19 +81,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected  void configure(HttpSecurity httpSecurity) throws Exception{
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().mvcMatchers(HttpMethod.OPTIONS, "/**");
+        web.ignoring().mvcMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs","/webjars/**");
+    }
 
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .httpBasic().disable()
+                .cors().and()
                 .csrf().disable()
                 .headers().cacheControl().disable().frameOptions().disable().and()                              // 캐시 처리
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()                        // 에러 처리
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()               // (JWT) 세션 처리 스프링시큐리티가 생성하지도않고 기존것을 사용하지도 않음
-                .addFilterBefore(this.jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class) // 커스텀한 시큐리티 필터 추가
+         //       .addFilterBefore(this.jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class) // 커스텀한 시큐리티 필터 추가
                    .authorizeRequests()
                        .mvcMatchers("/api/sign-in").permitAll()
+                       .antMatchers("/swagger-ui.html").permitAll()
                        .antMatchers("/h2-console/**").permitAll()
                        .antMatchers("/actuator/**").permitAll()
+                       .antMatchers("/api/**").permitAll()
                        .antMatchers(HttpMethod.OPTIONS).permitAll()
                        .anyRequest().authenticated()
                        .and()
