@@ -19,10 +19,14 @@ com/ktwiki/api/security/JwtUtil.class
 com/ktwiki/api/security/JwtAuthenticationEntryPoint.class
 com/ktwiki/api/security/SimpleJwtUtil.class
 com/ktwiki/api/vo/NautilusUser.class
+com/ktwiki/api/dao/test/TestDAO.class
 com/ktwiki/api/filter/JwtAuthenticationTokenFilter.class
+com/ktwiki/api/config/DatabaseConfiguration.class
 com/ktwiki/api/security/JwtUser.class
+com/ktwiki/api/service/test/TestService.class
 com/ktwiki/api/service/JwtUserDetailsService.class
 com/ktwiki/api/dto/JwtAuthenticationRequest.class
 com/ktwiki/api/service/PlainUserService.class
 com/ktwiki/api/vo/PlainUser.class
+com/ktwiki/api/dao/test/impl/TestDAOImpl.class
 com/ktwiki/api/util/NullPasswordEncoder.class

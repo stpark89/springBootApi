@@ -96,6 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                        .antMatchers("/swagger-ui.html").permitAll()
                        .antMatchers("/h2-console/**").permitAll()
                        .antMatchers("/actuator/**").permitAll()
+                       .antMatchers("/api/connectionTest").permitAll()
                        .anyRequest().authenticated()
                        .and()
                             .formLogin().disable();                                                             // Security Login Form 미사용

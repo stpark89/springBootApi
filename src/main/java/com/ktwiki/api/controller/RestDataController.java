@@ -1,5 +1,6 @@
 package com.ktwiki.api.controller;
 
+import com.ktwiki.api.service.test.TestService;
 import com.ktwiki.api.vo.TestVo;
 import com.ktwiki.api.vo.common.ApiResponseVo;
 import com.sun.istack.NotNull;
@@ -7,11 +8,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +29,9 @@ import java.util.List;
 @RequestMapping(value="/api")
 @RestController
 public class RestDataController {
+
+    @Autowired
+    private TestService testService;
 
     /**
      * Get 요청
@@ -74,8 +80,16 @@ public class RestDataController {
         log.info("errorTest");
         System.out.println("아이디 확인중 -----");
         System.out.println(id);
-
         return "Test";
+    }
+
+    /**
+     * 디비 정보 조회
+     */
+    @GetMapping(value="/connectionTest")
+    public TestVo connectionTest() throws Exception{
+        log.info("connection Test");
+        return testService.connectionTest();
     }
 
 }
