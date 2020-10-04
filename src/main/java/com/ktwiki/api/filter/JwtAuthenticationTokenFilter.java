@@ -32,7 +32,6 @@ import org.springframework.security.core.GrantedAuthority;
  *    - type : " JWT"
  *    - alg : "HS256"  - 해싱 알고리즘 지정. 검증할때 사용되는 signature 부분에서 사용됨.
  */
-/**
 @Log
 @Named
 @Component
@@ -57,10 +56,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("JwtAuthenticationTokenFilter.doFilterInternal");
-        System.out.println("username : " +request.getParameter("username"));
-        System.out.println("password : " +request.getParameter("password"));
-
-        /**
 
         if(!loginUrl.equals(request.getRequestURI())){
             String token = "";
@@ -109,5 +104,3 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 }
-
-**/

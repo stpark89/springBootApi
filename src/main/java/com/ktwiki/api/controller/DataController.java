@@ -33,6 +33,9 @@ public class DataController {
 
     @PostMapping("sign-in")
     public ResponseEntity signIn(@RequestBody @Validated JwtAuthenticationRequest request) {
+
+        log.info("처음 로그인 탔을 경우 ---");
+
         try {
             final Authentication authentication = this.authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

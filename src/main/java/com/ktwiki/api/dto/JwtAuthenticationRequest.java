@@ -1,13 +1,12 @@
 package com.ktwiki.api.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
-@Builder
 public class JwtAuthenticationRequest implements Serializable {
 
 
@@ -18,6 +17,12 @@ public class JwtAuthenticationRequest implements Serializable {
 
     @NonNull
     private String password;
+
+    @JsonCreator
+    public JwtAuthenticationRequest(@JsonProperty("username") String username, @JsonProperty("password") String password){
+        this.username = username;
+        this.password = password;
+    }
 
 
 }
